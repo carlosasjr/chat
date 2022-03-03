@@ -33,7 +33,7 @@ class NewMessageCreated implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            Channel('chatroom'), // users online
+            new Channel('chatroom') //canal pelo qual será obtidos os usuários onlines
         ];
     }
 }

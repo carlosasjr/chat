@@ -17,7 +17,7 @@ services:
             - redis
             - queue
         networks:
-            - docker-laravel
+            - larachat
 
     #nginx
     nginx:
@@ -29,13 +29,15 @@ services:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d
         networks:
-            - docker-laravel
+            - larachat
 
     #redis
     redis:
         image: redis:latest
+        ports:
+            - 6379:6379
         networks:
-            - docker-laravel
+            - larachat
 
     #queue
     queue:
@@ -52,7 +54,7 @@ services:
         volumes:
             - ./:/var/www
         networks:
-            - docker-laravel
+            - larachat
 
     #db
     mysql:
@@ -68,8 +70,8 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_USER: ${DB_USERNAME}
         networks:
-            - docker-laravel
+            - larachat
 
 networks:
-    docker-laravel:
+    larachat:
         driver: bridge
