@@ -8,6 +8,7 @@
             </h3>
             <div class="relative my-5 text-gray-600">
                 <input
+                    v-model="filter"
                     type="search"
                     name="serch"
                     placeholder="Search"
@@ -100,13 +101,27 @@ export default {
     },
 
     computed: {
-        ...mapGetters(["users"]),
+        ...mapGetters(["allUsers"]),
+
+        users() {
+            return this.allUsers.filter((user) => {
+                if (this.filter === "") return user;
+
+                return (
+                    user.name
+                        .toLowerCase()
+                        .includes(this.filter.toLowerCase()) ||
+                    user.email === this.filter
+                );
+            });
+        },
     },
 
     data() {
         return {
             selected: "inbox",
             activeChat: 0,
+            filter: "",
         };
     },
 };

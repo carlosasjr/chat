@@ -5891,17 +5891,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.getUsers();
   },
   methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(["getUsers"])),
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["users"])),
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["allUsers"])), {}, {
+    users: function users() {
+      var _this = this;
+
+      return this.allUsers.filter(function (user) {
+        if (_this.filter === "") return user;
+        return user.name.toLowerCase().includes(_this.filter.toLowerCase()) || user.email === _this.filter;
+      });
+    }
+  }),
   data: function data() {
     return {
       selected: "inbox",
-      activeChat: 0
+      activeChat: 0,
+      filter: ""
     };
   }
 });
@@ -5912,14 +5923,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /*!******************************!*\
   !*** ./resources/js/Echo.js ***!
   \******************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 
 window.Echo.join("larachat_database_chatroom").here(function (users) {
   console.log("online", users);
-}).joining(function (users) {
-  console.log("online", users);
-}).leaving(function (users) {
-  console.log("saiu", users);
+  _store__WEBPACK_IMPORTED_MODULE_0__["default"].commit("ADD_ONLINE_USERS", users);
+}).joining(function (user) {
+  console.log("online", user);
+  _store__WEBPACK_IMPORTED_MODULE_0__["default"].commit("ADD_ONLINE_USER", user);
+}).leaving(function (user) {
+  console.log("saiu", user);
+  _store__WEBPACK_IMPORTED_MODULE_0__["default"].commit("REMOVE_ONLINE_USER", user);
 });
 
 /***/ }),
@@ -6045,8 +6063,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  users: function users(state) {
-    return state.users.data;
+  allUsers: function allUsers(state) {
+    var users = state.users.data;
+    var usersOnline = state.onlineUsers;
+    users = users.sort(function (user) {
+      var index = usersOnline.findIndex(function (item) {
+        return item.email === user.email;
+      });
+      user.online = index != -1;
+      return index == -1 ? 1 : -1;
+    });
+    return users;
   }
 });
 
@@ -6094,6 +6121,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   ADD_ALL_USERS: function ADD_ALL_USERS(state, users) {
     state.users = users;
+  },
+  ADD_ONLINE_USERS: function ADD_ONLINE_USERS(state, users) {
+    state.onlineUsers = users;
+  },
+  ADD_ONLINE_USER: function ADD_ONLINE_USER(state, user) {
+    state.onlineUsers.unshift(user);
+  },
+  REMOVE_ONLINE_USER: function REMOVE_ONLINE_USER(state, user) {
+    state.onlineUsers = state.onlineUsers.filter(function (value) {
+      return value.email != user.email;
+    });
   }
 });
 
@@ -6113,7 +6151,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   users: {
     data: []
-  }
+  },
+  onlineUsers: []
 });
 
 /***/ }),
@@ -40768,9 +40807,26 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "relative my-5 text-gray-600" }, [
         _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.filter,
+              expression: "filter",
+            },
+          ],
           staticClass:
             "w-full bg-gray-100 h-10 px-5 pr-10 rounded-full text-sm focus:outline-none focus:shadow-lg focus:bg-white hover:shadow-md",
           attrs: { type: "search", name: "serch", placeholder: "Search" },
+          domProps: { value: _vm.filter },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.filter = $event.target.value
+            },
+          },
         }),
         _vm._v(" "),
         _c(
