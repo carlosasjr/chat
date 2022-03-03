@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(ChatController::class)
     ->prefix('chat')
     ->name('chat.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', 'index')->name('index');
     });
