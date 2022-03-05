@@ -18,9 +18,9 @@ Route::prefix('v1')
             ->prefix('messages')
             ->group(function () {
                 Route::get('/create', 'store');
+                Route::get('/{id}', 'messagesWithUser');
             });
     });
-
 
 Route::get('/', function () {
     return ['message', 'ok'];

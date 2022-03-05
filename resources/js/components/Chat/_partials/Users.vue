@@ -4,7 +4,7 @@
             <h3
                 class="text-xl font-semibold tracking-wide mt-5 hidden lg:block"
             >
-                Conversas
+                Usuários
             </h3>
             <div class="relative my-5 text-gray-600">
                 <input
@@ -40,15 +40,21 @@
         <ul class="flex flex-col chat-list">
             <div v-for="(user, index) in users" :key="index">
                 <li
-                    class="bg-white hover:bg-gray-100 border-b p-4 cursor-pointer"
-                    :class="{ 'is-active': activeChat === index }"
+                    @click="openChatWithUser(user)"
+                    :class="[
+                        'hover:bg-gray-100',
+                        'border-b',
+                        'p-4',
+                        'cursor-pointer',
+                        activeChat === user.id ? 'is-active' : 'bg-white',
+                    ]"
                 >
                     <div class="flex items-center relative">
                         <div class="relative">
                             <img
                                 :src="[
                                     user.photo != ''
-                                        ? user.pho
+                                        ? user.photo
                                         : '/images/no-photo.png',
                                 ]"
                                 :alt="user.name"
@@ -90,14 +96,24 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
     mounted() {
         this.getUsers();
     },
 
     methods: {
-        ...mapActions(["getUsers"]),
+        ...mapActions(["getUsers", "getMessagesConversation"]),
+
+        ...mapMutations({
+            setUserConversation: "SET_USER_CONVERSATION",
+        }),
+
+        openChatWithUser(user) {
+            this.activeChat = user.id;
+            this.setUserConversation(user);
+            this.getMessagesConversation();
+        },
     },
 
     computed: {

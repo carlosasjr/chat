@@ -5485,6 +5485,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5647,85 +5654,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mounted: function mounted() {},
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["userConversation", "messages"])),
+  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(["getMessagesConversation"]))
+});
 
 /***/ }),
 
@@ -5892,12 +5826,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.getUsers();
   },
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(["getUsers"])),
+  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(["getUsers", "getMessagesConversation"])), (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)({
+    setUserConversation: "SET_USER_CONVERSATION"
+  })), {}, {
+    openChatWithUser: function openChatWithUser(user) {
+      this.activeChat = user.id;
+      this.setUserConversation(user);
+      this.getMessagesConversation();
+    }
+  }),
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["allUsers"])), {}, {
     users: function users() {
       var _this = this;
@@ -5979,15 +5927,7 @@ try {
 } catch (e) {}
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"; // import Echo from 'laravel-echo';
-// window.Pusher = require('pusher-js');
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });
-
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 window.io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
@@ -6010,19 +5950,148 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_users__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/users */ "./resources/js/store/modules/users/index.js");
+/* harmony import */ var _modules_chat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/chat */ "./resources/js/store/modules/chat/index.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
-var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
+
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_3__["default"]);
+var store = new vuex__WEBPACK_IMPORTED_MODULE_3__["default"].Store({
   modules: {
-    users: _modules_users__WEBPACK_IMPORTED_MODULE_0__["default"]
+    users: _modules_users__WEBPACK_IMPORTED_MODULE_0__["default"],
+    chat: _modules_chat__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/chat/actions.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/chat/actions.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  getMessagesConversation: function getMessagesConversation(_ref) {
+    var state = _ref.state,
+        commit = _ref.commit;
+    commit("CLEAR_MESSAGES");
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/v1/messages/".concat(state.userConversation.id)).then(function (response) {
+      commit("ADD_MESSAGES", response.data.data);
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/chat/getters.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/chat/getters.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  userConversation: function userConversation(state) {
+    return state.userConversation;
+  },
+  messages: function messages(state) {
+    return state.messages;
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/chat/index.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/chat/index.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./resources/js/store/modules/chat/state.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./actions */ "./resources/js/store/modules/chat/actions.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/modules/chat/mutations.js");
+/* harmony import */ var _getters_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getters.js */ "./resources/js/store/modules/chat/getters.js");
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  state: _state__WEBPACK_IMPORTED_MODULE_0__["default"],
+  actions: _actions__WEBPACK_IMPORTED_MODULE_1__["default"],
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_2__["default"],
+  getters: _getters_js__WEBPACK_IMPORTED_MODULE_3__["default"]
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/chat/mutations.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/chat/mutations.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  SET_USER_CONVERSATION: function SET_USER_CONVERSATION(state, user) {
+    state.userConversation = user;
+  },
+  REMOVE_USER_CONVERSATION: function REMOVE_USER_CONVERSATION(state) {
+    state.userConversation = null;
+  },
+  ADD_MESSAGES: function ADD_MESSAGES(state, messages) {
+    state.messages = messages;
+  },
+  ADD_MESSAGE: function ADD_MESSAGE(state, message) {
+    state.messages.push(message);
+  },
+  CLEAR_MESSAGES: function CLEAR_MESSAGES(state) {
+    state.messages = [];
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/chat/state.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/chat/state.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  userConversation: null,
+  messages: []
+});
 
 /***/ }),
 
@@ -40272,172 +40341,29 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "chat-window is-active" }, [
-    _c("div", { staticClass: "chat-window__wrapper" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "chat-window__header bg-white px-6 py-2 h-20 flex md:items-center justify-between border-b-2 border-gray-200",
-        },
-        [
-          _c("div", { staticClass: "flex items-center space-x-4" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "cursor-pointer lg:pointer-events-none rounded-full flex items-center hover:bg-gray-100 pl-2",
-              },
-              [
-                _c("span", { staticClass: "lg:hidden text-gray-500" }, [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "w-4 h-4 mr-2",
-                      attrs: {
-                        fill: "none",
-                        stroke: "currentColor",
-                        viewBox: "0 0 24 24",
-                        xmlns: "http://www.w3.org/2000/svg",
-                      },
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          "stroke-linecap": "round",
-                          "stroke-linejoin": "round",
-                          "stroke-width": "2",
-                          d: "M10 19l-7-7m0 0l7-7m-7 7h18",
-                        },
-                      }),
-                    ]
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("img", {
-                  staticClass: "w-10 h-10 rounded-full",
-                  attrs: {
-                    src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                    alt: "",
-                  },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex flex-col leading-tight" }, [
-              _c("div", { staticClass: "mt-1 flex items-center" }, [
-                _c(
-                  "span",
-                  { staticClass: "text-lg font-medium text-gray-700 mr-3" },
-                  [_vm._v(_vm._s("Carlos Ferreira"))]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-sm text-muted" }, [
-                _vm._v("Junior Developer"),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "flex items-center space-x-2" }, [
-            _c(
-              "button",
-              {
-                staticClass:
-                  "inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none",
-                attrs: { type: "button" },
-              },
-              [
-                _c(
-                  "svg",
-                  {
-                    staticClass: "h-6 w-6",
-                    attrs: {
-                      xmlns: "http://www.w3.org/2000/svg",
-                      fill: "none",
-                      viewBox: "0 0 24 24",
-                      stroke: "currentColor",
-                    },
-                  },
-                  [
-                    _c("path", {
-                      attrs: {
-                        "stroke-linecap": "round",
-                        "stroke-linejoin": "round",
-                        "stroke-width": "2",
-                        d: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
-                      },
-                    }),
-                  ]
-                ),
-              ]
-            ),
-          ]),
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "chat-window__messages-wrapper" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "chat-input w-full px-4 mb-4" }, [
+  return _vm.userConversation
+    ? _c("div", { staticClass: "chat-window is-active" }, [
+        _c("div", { staticClass: "chat-window__wrapper" }, [
           _c(
             "div",
             {
               staticClass:
-                "flex flex-row items-center h-16 rounded-xl px-4 bg-white",
+                "chat-window__header bg-white px-6 py-2 h-20 flex md:items-center justify-between border-b-2 border-gray-200",
             },
             [
-              _c("div", [
+              _c("div", { staticClass: "flex items-center space-x-4" }, [
                 _c(
-                  "button",
+                  "div",
                   {
                     staticClass:
-                      "flex items-center justify-center text-gray-400 hover:text-gray-600",
+                      "cursor-pointer lg:pointer-events-none rounded-full flex items-center hover:bg-gray-100 pl-2",
                   },
                   [
-                    _c(
-                      "svg",
-                      {
-                        staticClass: "w-5 h-5",
-                        attrs: {
-                          fill: "none",
-                          stroke: "currentColor",
-                          viewBox: "0 0 24 24",
-                          xmlns: "http://www.w3.org/2000/svg",
-                        },
-                      },
-                      [
-                        _c("path", {
-                          attrs: {
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13",
-                          },
-                        }),
-                      ]
-                    ),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
-              _c("div", { staticClass: "ml-4" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0",
-                  },
-                  [
-                    _c("span", [_vm._v("Enviar")]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "ml-2" }, [
+                    _c("span", { staticClass: "lg:hidden text-gray-500" }, [
                       _c(
                         "svg",
                         {
-                          staticClass: "w-4 h-4 transform rotate-45 -mt-px",
+                          staticClass: "w-4 h-4 mr-2",
                           attrs: {
                             fill: "none",
                             stroke: "currentColor",
@@ -40451,173 +40377,213 @@ var render = function () {
                               "stroke-linecap": "round",
                               "stroke-linejoin": "round",
                               "stroke-width": "2",
-                              d: "M12 19l9 2-9-18-9 18 9-2zm0 0v-8",
+                              d: "M10 19l-7-7m0 0l7-7m-7 7h18",
                             },
                           }),
                         ]
                       ),
                     ]),
+                    _vm._v(" "),
+                    _c("img", {
+                      staticClass: "w-10 h-10 rounded-full",
+                      attrs: {
+                        src: [
+                          _vm.userConversation.photo != ""
+                            ? _vm.userConversation.photo
+                            : "/images/no-photo.png",
+                        ],
+                        alt: _vm.userConversation.name,
+                      },
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex flex-col leading-tight" }, [
+                  _c("div", { staticClass: "mt-1 flex items-center" }, [
+                    _c(
+                      "span",
+                      { staticClass: "text-lg font-medium text-gray-700 mr-3" },
+                      [_vm._v(_vm._s(_vm.userConversation.name))]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-sm text-muted" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.userConversation.email)
+                    ),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex items-center space-x-2" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none",
+                    attrs: { type: "button" },
+                  },
+                  [
+                    _c(
+                      "svg",
+                      {
+                        staticClass: "h-6 w-6",
+                        attrs: {
+                          xmlns: "http://www.w3.org/2000/svg",
+                          fill: "none",
+                          viewBox: "0 0 24 24",
+                          stroke: "currentColor",
+                        },
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+                          },
+                        }),
+                      ]
+                    ),
                   ]
                 ),
               ]),
             ]
           ),
+          _vm._v(" "),
+          _c("div", { staticClass: "chat-window__messages-wrapper" }, [
+            _c("div", { staticClass: "chat-window__messages-inner" }, [
+              _c(
+                "div",
+                { staticClass: "chat-messages" },
+                _vm._l(_vm.messages, function (message, index) {
+                  return _c(
+                    "div",
+                    {
+                      key: index,
+                      class: message.me ? "my-message" : "his-message",
+                    },
+                    [
+                      _c("div", { staticClass: "inner" }, [
+                        !message.me
+                          ? _c("div", { staticClass: "profile" }, [
+                              _c("img", {
+                                staticClass: "w-10 h-10 rounded-full",
+                                attrs: {
+                                  src: [
+                                    message.sender.photo != ""
+                                      ? message.sender.photo
+                                      : "/images/no-photo.png",
+                                  ],
+                                  alt: message.sender.name,
+                                },
+                              }),
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "ballon-text" }, [
+                          _c("div", [_vm._v(_vm._s(message.message))]),
+                        ]),
+                      ]),
+                    ]
+                  )
+                }),
+                0
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "chat-input w-full px-4 mb-4" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "flex flex-row items-center h-16 rounded-xl px-4 bg-white",
+                },
+                [
+                  _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "flex items-center justify-center text-gray-400 hover:text-gray-600",
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "w-5 h-5",
+                            attrs: {
+                              fill: "none",
+                              stroke: "currentColor",
+                              viewBox: "0 0 24 24",
+                              xmlns: "http://www.w3.org/2000/svg",
+                            },
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d: "M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13",
+                              },
+                            }),
+                          ]
+                        ),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "ml-4" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0",
+                      },
+                      [
+                        _c("span", [_vm._v("Enviar")]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "ml-2" }, [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "w-4 h-4 transform rotate-45 -mt-px",
+                              attrs: {
+                                fill: "none",
+                                stroke: "currentColor",
+                                viewBox: "0 0 24 24",
+                                xmlns: "http://www.w3.org/2000/svg",
+                              },
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d: "M12 19l9 2-9-18-9 18 9-2zm0 0v-8",
+                                },
+                              }),
+                            ]
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
         ]),
-      ]),
-    ]),
-  ])
+      ])
+    : _vm._e()
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chat-window__messages-inner" }, [
-      _c("div", { staticClass: "chat-messages" }, [
-        _c("div", { staticClass: "his-message" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("div", { staticClass: "profile" }, [
-              _c("img", {
-                staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ballon-text" }, [
-              _c("div", [_vm._v("Hey How are you today?")]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "his-message" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("div", { staticClass: "profile" }, [
-              _c("img", {
-                staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ballon-text" }, [
-              _c("div", [
-                _vm._v(
-                  "\n                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.\n                  Vel ipsa commodi illum saepe numquam maxime asperiores\n                  voluptate sit, minima perspiciatis.\n                "
-                ),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "my-message" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("div", { staticClass: "profile" }, [
-              _c("img", {
-                staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ballon-text" }, [
-              _c("div", [_vm._v("I'm ok what about you?")]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "my-message" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("div", { staticClass: "profile" }, [
-              _c("img", {
-                staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ballon-text" }, [
-              _c("div", [
-                _vm._v(
-                  "\n                  Lorem ipsum dolor sit, amet consectetur adipisicing. ?\n                "
-                ),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "his-message" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("div", { staticClass: "profile" }, [
-              _c("img", {
-                staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ballon-text" }, [
-              _c("div", [_vm._v("Lorem ipsum dolor sit amet !")]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "my-message" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("div", { staticClass: "profile" }, [
-              _c("img", {
-                staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ballon-text" }, [
-              _c("div", [
-                _vm._v(
-                  "\n                  Lorem ipsum dolor sit, amet consectetur adipisicing. ?\n                "
-                ),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "his-message" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("div", { staticClass: "profile" }, [
-              _c("img", {
-                staticClass: "w-10 h-10 rounded-full",
-                attrs: {
-                  src: "https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144",
-                  alt: "",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ballon-text" }, [
-              _c("div", [
-                _vm._v(
-                  "\n                  Lorem ipsum dolor sit amet consectetur adipisicing elit.\n                  Perspiciatis, in.\n                "
-                ),
-              ]),
-            ]),
-          ]),
-        ]),
-      ]),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -40802,7 +40768,7 @@ var render = function () {
           staticClass:
             "text-xl font-semibold tracking-wide mt-5 hidden lg:block",
         },
-        [_vm._v("\n            Conversas\n        ")]
+        [_vm._v("\n            Usuários\n        ")]
       ),
       _vm._v(" "),
       _c("div", { staticClass: "relative my-5 text-gray-600" }, [
@@ -40875,9 +40841,18 @@ var render = function () {
           _c(
             "li",
             {
-              staticClass:
-                "bg-white hover:bg-gray-100 border-b p-4 cursor-pointer",
-              class: { "is-active": _vm.activeChat === index },
+              class: [
+                "hover:bg-gray-100",
+                "border-b",
+                "p-4",
+                "cursor-pointer",
+                _vm.activeChat === user.id ? "is-active" : "bg-white",
+              ],
+              on: {
+                click: function ($event) {
+                  return _vm.openChatWithUser(user)
+                },
+              },
             },
             [
               _c("div", { staticClass: "flex items-center relative" }, [
@@ -40886,7 +40861,7 @@ var render = function () {
                     staticClass: "w-12 h-12 rounded-full",
                     attrs: {
                       src: [
-                        user.photo != "" ? user.pho : "/images/no-photo.png",
+                        user.photo != "" ? user.photo : "/images/no-photo.png",
                       ],
                       alt: user.name,
                     },
