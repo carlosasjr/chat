@@ -20,6 +20,7 @@ Route::prefix('v1')
             ->group(function () {
                 Route::post('/create', 'store');
                 Route::get('/{id}', 'messagesWithUser');
+                Route::post('/mark-as-read', 'markMessgesAsRead');
             });
 
         Route::controller(FavoriteApiController::class)
