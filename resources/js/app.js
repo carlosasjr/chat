@@ -1,14 +1,20 @@
 require("./bootstrap");
 
 window.Vue = require("vue").default;
-import store from "./store";
 
-Vue.component(
-    "chat-component",
-    require("./components/Chat/ChatComponent.vue").default
-);
+import Vue from "vue";
+import VueToastify from "vue-toastify";
+import store from "./store";
+import router from "./router";
+
+Vue.use(VueToastify, {
+    position: "top-right",
+});
+
+Vue.component("chat-component", require("./layouts/default.vue").default);
 
 const app = new Vue({
     el: "#app",
     store,
+    router,
 });

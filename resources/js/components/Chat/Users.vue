@@ -4,7 +4,7 @@
             <h3
                 class="text-xl font-semibold tracking-wide mt-5 hidden lg:block"
             >
-                Usuários
+                {{ title }}
             </h3>
             <div class="relative my-5 text-gray-600">
                 <input
@@ -98,12 +98,19 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
-    mounted() {
-        this.getUsers();
+    props: {
+        allUsers: {
+            required: true,
+            type: Array,
+        },
+        title: {
+            required: true,
+            type: String,
+        },
     },
 
     methods: {
-        ...mapActions(["getUsers", "getMessagesConversation"]),
+        ...mapActions(["getMessagesConversation"]),
 
         ...mapMutations({
             setUserConversation: "SET_USER_CONVERSATION",
@@ -117,8 +124,6 @@ export default {
     },
 
     computed: {
-        ...mapGetters(["allUsers"]),
-
         users() {
             return this.allUsers.filter((user) => {
                 if (this.filter === "") return user;

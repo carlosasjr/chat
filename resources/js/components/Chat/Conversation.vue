@@ -50,6 +50,7 @@
                 <div class="flex items-center space-x-2">
                     <button
                         type="button"
+                        @click.prevent="toogleFavorite"
                         class="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
                     >
                         <svg
@@ -58,6 +59,11 @@
                             viewBox="0 0 24 24"
                             stroke="currentColor"
                             class="h-6 w-6"
+                            :class="{
+                                'fill-current text-red-600':
+                                    userConversation != null &&
+                                    userConversation.isMyFavorite,
+                            }"
                         >
                             <path
                                 stroke-linecap="round"
@@ -71,7 +77,7 @@
             </div>
             <div class="chat-window__messages-wrapper">
                 <!-- chat msgs  -->
-                <div class="chat-window__messages-inner">
+                <div class="chat-window__messages-inner" ref="messages">
                     <div class="chat-messages">
                         <div
                             :class="message.me ? 'my-message' : 'his-message'"
@@ -125,6 +131,8 @@
                         <div class="flex-grow ml-4">
                             <div class="relative w-full">
                                 <input
+                                    @keyup.enter="send"
+                                    v-model="message"
                                     type="text"
                                     class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
                                 />
@@ -132,9 +140,13 @@
                         </div>
                         <div class="ml-4">
                             <button
+                                @click.prevent="send"
+                                :disabled="disableButton"
                                 class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
                             >
-                                <span>Enviar</span>
+                                <span v-if="sendingMessage">Enviando...</span>
+                                <span v-else>Enviar</span>
+
                                 <span class="ml-2">
                                     <svg
                                         class="w-4 h-4 transform rotate-45 -mt-px"
@@ -165,12 +177,63 @@ import { mapActions, mapGetters } from "vuex";
 export default {
     mounted() {},
 
+    data() {
+        return {
+            message: "",
+            sendingMessage: false,
+        };
+    },
+
     computed: {
         ...mapGetters(["userConversation", "messages"]),
+
+        disableButton() {
+            return this.message.length < 2 || this.sendingMessage;
+        },
+    },
+
+    watch: {
+        messages() {
+            this.scroolMessages();
+        },
     },
 
     methods: {
-        ...mapActions(["getMessagesConversation"]),
+        ...mapActions(["sendNewMessage", "setNewFavorite", "removeFavorite"]),
+
+        async send() {
+            if (this.disableButton) return;
+
+            try {
+                this.sendingMessage = true;
+                await this.sendNewMessage(this.message);
+                this.message = "";
+            } catch (error) {
+                this.$vToastify.error("Falha ao enviar a mensagem", "Falha");
+            } finally {
+                this.sendingMessage = false;
+            }
+        },
+
+        async toogleFavorite() {
+            try {
+                if (this.userConversation.isMyFavorite)
+                    await this.removeFavorite(this.userConversation);
+                else await this.setNewFavorite(this.userConversation);
+            } catch (error) {
+                this.$vToastify.error("Falha ao favoritar o usuário", "Falha");
+            }
+        },
+
+        scroolMessages() {
+            setTimeout(() => {
+                this.$refs.messages.scroll({
+                    top: this.$refs.messages.scrollHeight,
+                    left: 0,
+                    behavior: "smooth",
+                });
+            }, 10);
+        },
     },
 };
 </script>

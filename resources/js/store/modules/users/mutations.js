@@ -16,4 +16,24 @@ export default {
             return value.email != user.email;
         });
     },
+
+    SET_USER_FAVORITE(state, user) {
+        state.users.data = state.users.data.map(function (item) {
+            if (item.email == user.email) {
+                user.isMyFavorite = true;
+            }
+
+            return item;
+        });
+    },
+
+    REMOVE_USER_FAVORITE(state, user) {
+        state.users.data = state.users.data.map(function (item) {
+            if (item.email == user.email) {
+                user.isMyFavorite = false;
+            }
+
+            return item;
+        });
+    },
 };

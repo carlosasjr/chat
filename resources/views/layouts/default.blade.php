@@ -10,6 +10,14 @@
     <link rel="stylesheet" href="{{ mix("css/app.css") }}">
     <link rel="stylesheet" href="{{ mix("css/chat.css") }}">
 
+    <script>
+        window.Laravel = {!!
+            json_encode([
+                'user' => auth()->check() ? auth()->user()->id : ''
+            ])
+        !!}
+    </script>
+
 </head>
 <body>
     <div id="app">

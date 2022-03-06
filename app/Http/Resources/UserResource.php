@@ -19,7 +19,8 @@ class UserResource extends JsonResource
             'name'  => $this->name,
             'email' => $this->email,
             'photo' => '',
-            'online' => false
+            'online' => false,
+            'isMyFavorite' => $this->favorite->count() > 0,
         ];
     }
 }
