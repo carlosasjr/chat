@@ -20,7 +20,7 @@ Route::prefix('v1')
             ->prefix('profile')
             ->group(function () {
                 Route::get('/me', 'me');
-                Route::get('/logout', 'logout');
+                Route::post('/logout', 'logout');
 
                 Route::put('/update-preference', 'updatePreference');
                 Route::patch('/update-image-chat', 'updatePreferenceImageChat');

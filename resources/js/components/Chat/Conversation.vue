@@ -7,6 +7,7 @@
             >
                 <div class="flex items-center space-x-4">
                     <div
+                        @click="removeUserChat"
                         class="cursor-pointer lg:pointer-events-none rounded-full flex items-center hover:bg-gray-100 pl-2"
                     >
                         <span class="lg:hidden text-gray-500">
@@ -182,7 +183,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import mutations from "../../store/modules/users/mutations";
 export default {
     mounted() {},
 
@@ -209,7 +211,9 @@ export default {
 
     methods: {
         ...mapActions(["sendNewMessage", "setNewFavorite", "removeFavorite"]),
-
+        ...mapMutations({
+            removeUserChat: "REMOVE_USER_CONVERSATION",
+        }),
         async send() {
             if (this.disableButton) return;
 
@@ -246,3 +250,16 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.chat-window__messages-inner::-webkit-scrollbar-track {
+    background-color: #dad7d7;
+}
+.chat-window__messages-inner::-webkit-scrollbar {
+    width: 6px;
+    background: #dad7d7;
+}
+.chat-window__messages-inner::-webkit-scrollbar-thumb {
+    background: #3f51b5;
+}
+</style>

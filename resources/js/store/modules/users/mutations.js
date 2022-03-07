@@ -12,9 +12,9 @@ export default {
     },
 
     REMOVE_ONLINE_USER(state, user) {
-        state.onlineUsers = state.onlineUsers.filter((value) => {
-            return value.email != user.email;
-        });
+        state.onlineUsers = state.onlineUsers.filter(
+            (u) => u.email != user.email
+        );
     },
 
     SET_USER_FAVORITE(state, user) {

@@ -1,5 +1,8 @@
 <template>
-    <div class="chat-container relative">
+    <div
+        class="chat-container relative"
+        :class="{ 'has-oppened': hasUserChat }"
+    >
         <users :title="'Favoritos'" :all-users="allFavorites"></users>
         <conversation></conversation>
     </div>
@@ -17,7 +20,11 @@ export default {
     },
 
     computed: {
-        ...mapGetters(["allFavorites"]),
+        ...mapGetters(["allFavorites", "userConversation"]),
+
+        hasUserChat() {
+            return this.userConversation != null;
+        },
     },
 
     methods: {
