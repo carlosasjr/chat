@@ -3,7 +3,7 @@ export default {
         state.userConversation = user;
     },
 
-    REMOVE_USER_CONVERSATION(state) {
+    REMOVE_USER_CONVERSATION(state, user) {
         state.userConversation = null;
     },
 
