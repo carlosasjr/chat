@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'image'
     ];
 
     /**
@@ -59,7 +60,7 @@ class User extends Authenticatable
             ->where('user_id', auth()->user()->id);
     }
 
-    public function unreadMessagese()
+    public function unreadMessages()
     {
         return $this->hasMany(Message::class, 'sender_id')
             ->where('read', false)
@@ -69,7 +70,7 @@ class User extends Authenticatable
     public function getAllUsers()
     {
         return $this->where('id', '<>', auth()->user()->id)
-            ->with(['favorite', 'unreadMessagese'])
+            ->with(['favorite', 'unreadMessages'])
             ->inRandomOrder()
             ->get();
     }

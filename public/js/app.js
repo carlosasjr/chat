@@ -5881,6 +5881,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -6165,6 +6166,7 @@ window.Echo.channel("larachat_database_private-chat.".concat(user_id)).listen("N
 
   if (_store__WEBPACK_IMPORTED_MODULE_0__["default"].state.chat.userConversation == null || _store__WEBPACK_IMPORTED_MODULE_0__["default"].state.chat.userConversation.id != conversation.sender.id) {
     vue__WEBPACK_IMPORTED_MODULE_1__["default"].$vToastify.success("Mensagem: ".concat(conversation.message), "".concat(conversation.sender.name, " enviou uma nova mensagem"));
+    _store__WEBPACK_IMPORTED_MODULE_0__["default"].commit("UPDATE_UNREAD_MESSAGES", conversation.sender);
   } else {
     conversation.me = false;
     _store__WEBPACK_IMPORTED_MODULE_0__["default"].commit("ADD_MESSAGE", conversation);
@@ -6341,10 +6343,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   getMessagesConversation: function getMessagesConversation(_ref) {
     var state = _ref.state,
-        commit = _ref.commit;
+        commit = _ref.commit,
+        dispatch = _ref.dispatch;
     commit("CLEAR_MESSAGES");
     return axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/v1/messages/".concat(state.userConversation.id)).then(function (response) {
       commit("ADD_MESSAGES", response.data.data);
+      dispatch("markConversationAsRead");
     });
   },
   sendNewMessage: function sendNewMessage(_ref2, message) {
@@ -6359,6 +6363,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         receiver: _objectSpread({}, state.userConversation),
         me: true
       });
+    });
+  },
+  markConversationAsRead: function markConversationAsRead(_ref3) {
+    var state = _ref3.state,
+        commit = _ref3.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().post("/api/v1/messages/mark-as-read", {
+      sender: state.userConversation.id
+    }).then(function (response) {
+      commit("CLEAR_TOTAL_UNREAD_MESSAGES", state.userConversation);
     });
   }
 });
@@ -6701,7 +6714,7 @@ __webpack_require__.r(__webpack_exports__);
   SET_USER_FAVORITE: function SET_USER_FAVORITE(state, user) {
     state.users.data = state.users.data.map(function (item) {
       if (item.email == user.email) {
-        user.isMyFavorite = true;
+        item.isMyFavorite = true;
       }
 
       return item;
@@ -6710,7 +6723,25 @@ __webpack_require__.r(__webpack_exports__);
   REMOVE_USER_FAVORITE: function REMOVE_USER_FAVORITE(state, user) {
     state.users.data = state.users.data.map(function (item) {
       if (item.email == user.email) {
-        user.isMyFavorite = false;
+        item.isMyFavorite = false;
+      }
+
+      return item;
+    });
+  },
+  CLEAR_TOTAL_UNREAD_MESSAGES: function CLEAR_TOTAL_UNREAD_MESSAGES(state, user) {
+    state.users.data.map(function (item) {
+      if (item.email == user.email) {
+        item.unreadMessage = 0;
+      }
+
+      return item;
+    });
+  },
+  UPDATE_UNREAD_MESSAGES: function UPDATE_UNREAD_MESSAGES(state, user) {
+    state.users.data.map(function (item) {
+      if (item.email == user.email) {
+        item.unreadMessage = parseInt(item.unreadMessage) + 1;
       }
 
       return item;
@@ -42276,10 +42307,18 @@ var render = function () {
                 _c(
                   "span",
                   {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: user.unreadMessage > 0,
+                        expression: "user.unreadMessage > 0",
+                      },
+                    ],
                     staticClass:
                       "absolute bottom-0 right-0 text-xs font-medium bg-indigo-500 text-white text-circle",
                   },
-                  [_vm._v("3")]
+                  [_vm._v(_vm._s(user.unreadMessage))]
                 ),
               ]),
             ]

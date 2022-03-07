@@ -17,6 +17,8 @@ window.Echo.channel(`larachat_database_private-chat.${user_id}`).listen(
                 `Mensagem: ${conversation.message}`,
                 `${conversation.sender.name} enviou uma nova mensagem`
             );
+
+            store.commit("UPDATE_UNREAD_MESSAGES", conversation.sender);
         } else {
             conversation.me = false;
             store.commit("ADD_MESSAGE", conversation);

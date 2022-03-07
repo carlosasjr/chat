@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MarkMessageAsRead extends FormRequest
+class UpdatePhoto extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class MarkMessageAsRead extends FormRequest
     public function rules()
     {
         return [
-            'sender'    => 'required|exists:users,id'
+            'image' => 'required|image|max:1024'
         ];
     }
 }

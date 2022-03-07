@@ -85,8 +85,9 @@
                             </span>
                         </div>
                         <span
+                            v-show="user.unreadMessage > 0"
                             class="absolute bottom-0 right-0 text-xs font-medium bg-indigo-500 text-white text-circle"
-                            >3</span
+                            >{{ user.unreadMessage }}</span
                         >
                     </div>
                 </li>
@@ -96,7 +97,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 export default {
     props: {
         allUsers: {

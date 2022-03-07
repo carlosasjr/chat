@@ -18,9 +18,9 @@ export default {
     },
 
     SET_USER_FAVORITE(state, user) {
-        state.users.data = state.users.data.map(function (item) {
+        state.users.data = state.users.data.map((item) => {
             if (item.email == user.email) {
-                user.isMyFavorite = true;
+                item.isMyFavorite = true;
             }
 
             return item;
@@ -28,11 +28,29 @@ export default {
     },
 
     REMOVE_USER_FAVORITE(state, user) {
-        state.users.data = state.users.data.map(function (item) {
+        state.users.data = state.users.data.map((item) => {
             if (item.email == user.email) {
-                user.isMyFavorite = false;
+                item.isMyFavorite = false;
             }
 
+            return item;
+        });
+    },
+
+    CLEAR_TOTAL_UNREAD_MESSAGES(state, user) {
+        state.users.data.map(function (item) {
+            if (item.email == user.email) {
+                item.unreadMessage = 0;
+            }
+            return item;
+        });
+    },
+
+    UPDATE_UNREAD_MESSAGES(state, user) {
+        state.users.data.map(function (item) {
+            if (item.email == user.email) {
+                item.unreadMessage = parseInt(item.unreadMessage) + 1;
+            }
             return item;
         });
     },
