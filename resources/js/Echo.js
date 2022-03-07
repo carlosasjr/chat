@@ -1,5 +1,6 @@
 import Vue from "vue";
 import store from "./store";
+import state from "./store/modules/users/state";
 
 const user_id = window.Laravel.user;
 
@@ -13,10 +14,11 @@ window.Echo.channel(`larachat_database_private-chat.${user_id}`).listen(
             store.state.chat.userConversation == null ||
             store.state.chat.userConversation.id != conversation.sender.id
         ) {
-            Vue.$vToastify.success(
-                `Mensagem: ${conversation.message}`,
-                `${conversation.sender.name} enviou uma nova mensagem`
-            );
+            if (store.state.me.me.preference.me_notify)
+                Vue.$vToastify.success(
+                    `Mensagem: ${conversation.message}`,
+                    `${conversation.sender.name} enviou uma nova mensagem`
+                );
 
             store.commit("UPDATE_UNREAD_MESSAGES", conversation.sender);
         } else {

@@ -60,6 +60,11 @@ class User extends Authenticatable
             ->where('user_id', auth()->user()->id);
     }
 
+    public function preference()
+    {
+        return $this->hasOne(Preference::class);
+    }
+
     public function unreadMessages()
     {
         return $this->hasMany(Message::class, 'sender_id')
@@ -70,7 +75,7 @@ class User extends Authenticatable
     public function getAllUsers()
     {
         return $this->where('id', '<>', auth()->user()->id)
-            ->with(['favorite', 'unreadMessages'])
+            ->with(['favorite', 'unreadMessages', 'preference'])
             ->inRandomOrder()
             ->get();
     }

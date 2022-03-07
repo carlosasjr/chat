@@ -20,9 +20,12 @@ Route::prefix('v1')
             ->prefix('profile')
             ->group(function () {
                 Route::get('/me', 'me');
-                Route::get('/me', 'me');
+                Route::get('/logout', 'logout');
+
+                Route::put('/update-preference', 'updatePreference');
+                Route::patch('/update-image-chat', 'updatePreferenceImageChat');
+                Route::patch('/remove-image-chat', 'removeImageChat');
                 Route::patch('/update-photo', 'updatePhoto');
-                Route::patch('/update-image-chat', 'updateImageChat');
                 Route::put('/update', 'update');
             });
 

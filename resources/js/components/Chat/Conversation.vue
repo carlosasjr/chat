@@ -75,7 +75,16 @@
                     </button>
                 </div>
             </div>
-            <div class="chat-window__messages-wrapper">
+            <div
+                class="chat-window__messages-wrapper"
+                :style="[
+                    me.preference.image_background_chat
+                        ? {
+                              'background-image': `url('${me.preference.image_background_chat}')`,
+                          }
+                        : '',
+                ]"
+            >
                 <!-- chat msgs  -->
                 <div class="chat-window__messages-inner" ref="messages">
                     <div class="chat-messages">
@@ -185,7 +194,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(["userConversation", "messages"]),
+        ...mapGetters(["userConversation", "messages", "me"]),
 
         disableButton() {
             return this.message.length < 2 || this.sendingMessage;
